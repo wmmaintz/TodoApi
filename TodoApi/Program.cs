@@ -8,12 +8,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace WebApplication1TodoApi
+namespace TodoApi
 {
     public class Program
     {
         public static void Main(string[] args)
         {
+            Console.WriteLine("Creating a Web Host");
             CreateWebHostBuilder(args).Build().Run();
         }
 

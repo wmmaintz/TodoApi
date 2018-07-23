@@ -6,13 +6,16 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using TodoApi.Models;
 
-namespace WebApplication1TodoApi
+namespace TodoApi
 {
+    /*
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -25,7 +28,10 @@ namespace WebApplication1TodoApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddDbContext<TodoContext>(opt =>
+                opt.UseInMemoryDatabase("TodoList"));
+            services.AddMvc()
+                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,6 +47,28 @@ namespace WebApplication1TodoApi
             }
 
             app.UseHttpsRedirection();
+            app.UseMvc();
+        }
+    }
+    */
+    public class Startup
+    {
+        public void ConfigureServices(IServiceCollection services)
+        {
+            Console.WriteLine("Configuring Services");
+            services.AddDbContext<TodoContext>(opt =>
+                opt.UseInMemoryDatabase("TodoList"));
+            services.AddMvc()
+                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+        }
+
+        public void Configure(IApplicationBuilder app)
+        {
+            Console.WriteLine("Configure App - Use Default Files");
+            app.UseDefaultFiles();
+            Console.WriteLine("Configure App - Use Static Files");
+            app.UseStaticFiles();
+            Console.WriteLine("Configure App - Use MVC");
             app.UseMvc();
         }
     }
