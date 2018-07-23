@@ -1,24 +1,32 @@
 # TodoApi
 Initial Creation
 
-This solution creates a .NET Core Todo API:
+This solution creates a .NET Core Todo API with the standard CRUD operations:
+CRUD(HTTP Verb) = Create(POST)/Retrieve(GET)/Update(PUT)/Delete(DELETE)
 
-API.................... Description.............. Request body....Response body
+Create:
+  POST /api/todo - Add a new item
+  Request body: To-do item
+  Response body: To-do item
 
-======================= ========================= =============== ====================
+Retrieve:
+  GET /api/todo - Get all to-do items
+  Request body: None
+  Response body: Array of to-do items
+  
+  GET /api/todo/{id} - Get an item by ID
+  Request body: None
+  Response body: To-do item  
 
-GET /api/todo.......... Get all to-do items...... None............Array of to-do items
+Update -
+  PUT /api/todo/{id} - Update an existing item
+  Request body: To-do item
+  Response body: None
 
-GET /api/todo/{id}......Get an item by ID........ None............To-do item
-
-POST /api/todo..........Add a new item............To-do item......To-do item
-
-PUT /api/todo/{id}......Update an existing item.. To-do item......None
-
-DELETE /api/todo/{id}.. Delete an item............None............None
-
-
-The following diagram shows the basic design of the app.
+Delete -
+  DELETE /api/todo/{id} - Delete an item
+  Request body: None
+  Response body: None
 
 The client submits a request and receives a response from the application. Within the 
 application, there exists the controller, the model, and the data access layer. The 
@@ -35,5 +43,5 @@ as C# classes, also known as Plain Old CLR Object (POCOs).
 A controller is the object that handles HTTP requests and creates the HTTP response. This
 app has a single controller.
 
-This app doesn't use a persistent database, but rather stores to-do items in an in-memory 
-database.
+The initial version of this app doesn't use a persistent database, but rather stores the
+to-do items in an in-memory database.
