@@ -12,7 +12,6 @@ DELETE /api/todo/{id}   Delete an item    	      None	          None
 
 The following diagram shows the basic design of the app.
 
-
 The client submits a request and receives a response from the application. Within the 
 application, there exists the controller, the model, and the data access layer. The 
 request comes into the application's controller, and read/write operations occur 
