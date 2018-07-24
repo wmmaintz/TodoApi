@@ -53,22 +53,44 @@ namespace TodoApi
     */
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            Console.WriteLine("Configuring Services");
             services.AddDbContext<TodoContext>(opt =>
                 opt.UseInMemoryDatabase("TodoList"));
             services.AddMvc()
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
-        public void Configure(IApplicationBuilder app)
+        //public void Configure(IApplicationBuilder app)
+        //{
+        //    app.UseDefaultFiles();
+        //    app.UseStaticFiles();
+        //    app.UseMvc();
+        //}
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            Console.WriteLine("Configure App - Use Default Files");
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
             app.UseDefaultFiles();
-            Console.WriteLine("Configure App - Use Static Files");
             app.UseStaticFiles();
-            Console.WriteLine("Configure App - Use MVC");
             app.UseMvc();
         }
     }
