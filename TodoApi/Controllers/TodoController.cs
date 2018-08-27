@@ -8,7 +8,7 @@ namespace TodoApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TodoController : Controller
+    public class TodoController : ControllerBase
     {
         private readonly TodoContext _context;
 
@@ -18,7 +18,7 @@ namespace TodoApi.Controllers
 
             if (_context.TodoItems.Count() == 0)
             {
-                _context.TodoItems.Add(new TodoItem { Name = "Item1" });
+                _context.TodoItems.Add(new TodoItem { Name = "Default Item" });
                 _context.SaveChanges();
             }
         }
@@ -37,21 +37,20 @@ namespace TodoApi.Controllers
             {
                 return NotFound();
             }
-            return item;
+            return Ok(item);
         }
 
-        /*
-        [HttpGet("{name}", Name = "GetTodo")]
+        [HttpGet("name/{name}", Name = "GetTodoByName")]
         public ActionResult<TodoItem> GetByName(string name)
         {
-            var item = _context.TodoItems.Find(name);
+            var item = _context.TodoItems.FirstOrDefault(a => a.Name == name );
             if (item == null)
             {
                 return NotFound();
             }
-            return item;
+            return Ok(item);
         }
-        */
+
 
         [HttpPost]
         public IActionResult Create(TodoItem item)
@@ -65,30 +64,33 @@ namespace TodoApi.Controllers
         [HttpPut("{id}")]
         public IActionResult Update(long id, TodoItem item)
         {
-            var todo = _context.TodoItems.Find(id);
-            if (todo == null)
+            var item2Chg = _context.TodoItems.Find(id);
+            if (item2Chg == null)
             {
                 return NotFound();
             }
+            // Found it, update the other fields (Name & IsComplete)
+            item2Chg.Name = item.Name;
+            item2Chg.IsComplete = item.IsComplete;
 
-            todo.IsComplete = item.IsComplete;
-            todo.Name = item.Name;
-
-            _context.TodoItems.Update(todo);
+            // Update Entity Framework
+            _context.TodoItems.Update(item2Chg);
             _context.SaveChanges();
+
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
-            var todo = _context.TodoItems.Find(id);
-            if (todo == null)
+            var item2Del = _context.TodoItems.Find(id);
+            if (item2Del == null)
             {
                 return NotFound();
             }
 
-            _context.TodoItems.Remove(todo);
+            // Update Entity Framework
+            _context.TodoItems.Remove(item2Del);
             _context.SaveChanges();
             return NoContent();
         }
